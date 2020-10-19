@@ -39,8 +39,10 @@ Blockly.Blocks['ask_me_a_question'] = {
 
 Blockly.JavaScript['statement'] = function(block) {
     boxText = "";
+    code = '';
     var statements_bot = Blockly.JavaScript.statementToCode(block, 'Bott');
-    var code = '';
+    code += statements_bot;
+    console.log(statements_bot);
     return code;
 };
 
@@ -51,22 +53,19 @@ Blockly.JavaScript['ask_me_a_question'] = function(block) {
 };
 
 function intiateBot(dropdown_ask_me_a_question) {
-    var code = ``
+    let code = "";
     if (dropdown_ask_me_a_question === "a") {
-        // today = new Date().toISOString().slice(0, 10).toString();
-        boxText += "The date is: " + new Date().toLocaleDateString();
-        // window.alert(today);
+        code = `boxText += "The date is: " + new Date().toLocaleDateString();`
     } else if (dropdown_ask_me_a_question === "b") {
-        boxText += "The time is: " + new Date().toLocaleTimeString();
+        code = `boxText += "The time is: " + new Date().toLocaleTimeString();`
     } else if (dropdown_ask_me_a_question === "c") {
-        boxText += "I am fine, thank you. :)";
+        code = `boxText += "I am fine, thank you. :)";`
     } else if (dropdown_ask_me_a_question === "d") {
-        boxText += "JavaScript is a scripting or programming language that allows you to implement complex features on web pages";
+        code = `boxText += "JavaScript is a scripting or programming language that allows you to implement complex features on web pages";`
     } else if (dropdown_ask_me_a_question === "e") {
-        boxText += "I am Bot.";
+        code = `boxText += "I am Bot.";`
     }
-    boxText += "<br><br>";
-    redrawUi();
+    code += `\nboxText += "<br><br>";\n`
     return code;
 }
 
@@ -84,12 +83,13 @@ function redrawUi() {
 }
 
 function runcode() {
-    var geval = eval;
     try {
-        geval(Blockly.JavaScript.workspaceToCode(workspace));
+        code = '';
+        eval(Blockly.JavaScript.workspaceToCode(workspace));
     } catch (e) {
         console.error(e);
     }
+    redrawUi();
 }
 
 function reset() {
