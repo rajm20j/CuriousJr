@@ -7,22 +7,9 @@ $(document).ready(function() {
     });
 });
 
-// Blockly.Blocks["example_input_text"] = {
-//     init: function() {
-//         this.appendDummyInput()
-//             .appendField("Example Block:")
-//             .appendField(new Blockly.FieldTextInput("write here..."), "input");
-//         this.setPreviousStatement(true, null);
-//         this.setNextStatement(true, null);
-//         this.setColour(230);
-//         this.setTooltip("");
-//         this.setHelpUrl("");
-//     },
-// };
-
-Blockly.Blocks['bot'] = {
+Blockly.Blocks['statement'] = {
     init: function() {
-        this.appendStatementInput("Bot")
+        this.appendStatementInput("Bott")
             .setCheck(null)
             .appendField("Bot");
         this.setColour(230);
@@ -50,27 +37,27 @@ Blockly.Blocks['ask_me_a_question'] = {
     }
 };
 
-Blockly.JavaScript['bot'] = function(block) {
-    var statements_bot = Blockly.JavaScript.statementToCode(block, 'Bot');
-    // statements_bot.setNextStatement();
+Blockly.JavaScript['statement'] = function(block) {
+    boxText = "";
+    var statements_bot = Blockly.JavaScript.statementToCode(block, 'Bott');
+    var code = '';
     return code;
 };
 
 Blockly.JavaScript['ask_me_a_question'] = function(block) {
 
     var dropdown_ask_me_a_question = block.getFieldValue('Ask me a Question');
-    intiateBot(dropdown_ask_me_a_question);
+    return intiateBot(dropdown_ask_me_a_question);
 };
 
 function intiateBot(dropdown_ask_me_a_question) {
-    // var code = ``
-    boxText = "";
+    var code = ``
     if (dropdown_ask_me_a_question === "a") {
         // today = new Date().toISOString().slice(0, 10).toString();
-        boxText += new Date().toLocaleDateString();
+        boxText += "The date is: " + new Date().toLocaleDateString();
         // window.alert(today);
     } else if (dropdown_ask_me_a_question === "b") {
-        boxText += new Date().toLocaleTimeString();
+        boxText += "The time is: " + new Date().toLocaleTimeString();
     } else if (dropdown_ask_me_a_question === "c") {
         boxText += "I am fine, thank you. :)";
     } else if (dropdown_ask_me_a_question === "d") {
@@ -78,18 +65,10 @@ function intiateBot(dropdown_ask_me_a_question) {
     } else if (dropdown_ask_me_a_question === "e") {
         boxText += "I am Bot.";
     }
+    boxText += "<br><br>";
     redrawUi();
-    // return code;
+    return code;
 }
-
-// Blockly.JavaScript["example_input_text"] = function(block) {
-//     var text_input = block.getFieldValue("input");
-
-//     var code = `
-// var inputTextValue = "${text_input}";
-// `;
-//     return code;
-// };
 
 var workspace = Blockly.inject("blocklyDiv", {
     media: "assets/media/",
@@ -97,28 +76,20 @@ var workspace = Blockly.inject("blocklyDiv", {
 });
 
 function redrawUi() {
-    // if (typeof inputTextValue !== "undefined") {
-    //     $("#inputBox").text(inputTextValue);
-    // } else {
-    //     $("#inputBox").clear;
-    //     // Blockly.mainWorkspace.clear();
-    // }
     if (typeof boxText !== "undefined") {
-        $("#inputBox").text(boxText);
+        $("#inputBox").html(boxText);
     } else {
-        $("#inputBox").text("");
+        $("#inputBox").html("");
     }
 }
 
 function runcode() {
-    // Generate JavaScript code and run it.
     var geval = eval;
     try {
         geval(Blockly.JavaScript.workspaceToCode(workspace));
     } catch (e) {
         console.error(e);
     }
-    // redrawUi();
 }
 
 function reset() {
